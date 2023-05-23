@@ -34,7 +34,31 @@ class Client(object):
         body = {"query": f"query {{boards (ids: {board_id}) {{ columns {{ id title type settings_str }}}}}}"}
         return self.post(json=body)
 
-    def create_item(self, board_id, item_name, column_values: dict = None):
+    def list_items(self, board_id):
+        body = {
+            "query": f"query {{boards (ids: {board_id}) {{ items {{ id name created_at column_values {{title text}} }}}}}}"
+        }
+        return self.post(json=body)
+
+    def get_items_by_column_values(self, board_id, column_id, value, limit: int = 50, state: str = "active"):
+        """
+        Default limit is 50.
+        The item's state: all, active, archived, or deleted. The default state is active.
+        """
+        query = f"""
+            query {{
+                items_by_column_values (
+                    board_id: {board_id},
+                    column_id: "{column_id}",
+                    column_value: "{value}",
+                    limit: {limit},
+                    state: {state}
+                ) {{ id name created_at column_values {{title text}} }}}}
+            """
+        body = {"query": query}
+        return self.post(json=body)
+
+    def create_item(self, board_id, item_name: str, column_values: dict = None):
         """
         Creates an item inside a given board.
         column_values is a dictionary with the following structure:
@@ -58,24 +82,16 @@ class Client(object):
         body = {"query": query}
         return self.post(json=body)
 
+    def delete_webhook(self, webhook_id):
+        body = {"query": f"mutation {{ delete_webhook (id: {webhook_id}) {{ id board_id }} }}"}
+        return self.post(json=body)
+
     def get(self, **kwargs):
         response = self.request("GET", **kwargs)
         return self.parse(response)
 
     def post(self, **kwargs):
         response = self.request("POST", **kwargs)
-        return self.parse(response)
-
-    def delete(self, **kwargs):
-        response = self.request("DELETE", **kwargs)
-        return self.parse(response)
-
-    def put(self, **kwargs):
-        response = self.request("PUT", **kwargs)
-        return self.parse(response)
-
-    def patch(self, **kwargs):
-        response = self.request("PATCH", **kwargs)
         return self.parse(response)
 
     def request(self, method, headers=None, **kwargs):
