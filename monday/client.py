@@ -62,7 +62,7 @@ class Client(object):
         """
         Creates an item inside a given board.
         column_values is a dictionary with the following structure:
-            {"column_name": "column_value", "column_name": "column_value"}
+            {"column_id": "column_value", "column_id": "column_value"}
         """
         query = "mutation ($boardId: Int!, $myItemName: String!, $columnVals: JSON!) { create_item (board_id: $boardId, item_name: $myItemName, column_values:$columnVals) { id } }"
         variables = {
@@ -70,6 +70,21 @@ class Client(object):
             "myItemName": item_name,
             "columnVals": json.dumps(column_values),
         }
+        body = {"query": query, "variables": variables}
+        return self.post(json=body)
+
+    def update_item(self, board_id, item_id, column_values: dict):
+        """
+        column_values is a dictionary with the following structure:
+            {"column_id": "column_value", "column_id": "column_value"}
+        """
+        query = """
+            mutation ($boardId: Int!, $itemId: Int!, $columnVals: JSON!) {
+                change_multiple_column_values (item_id: $itemId, board_id: $boardId, column_values: $columnVals) 
+                    { id }
+            }
+        """
+        variables = {"boardId": int(board_id), "itemId": int(item_id), "columnVals": json.dumps(column_values)}
         body = {"query": query, "variables": variables}
         return self.post(json=body)
 

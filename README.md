@@ -47,8 +47,14 @@ items = client.get_items_by_column_values(board_id, column_id, column_value, lim
 #### - Create item
 ```python
 # column_values is a dictionary with the following structure:
-#    {"column_name": "column_value", "column_name": "column_value"}
+#    {"column_id": "column_value", "column_id": "column_value"}
 item = client.create_item(board_id, item_name: str, column_values: dict = None)
+```
+#### - Update item
+```python
+# column_values is a dictionary with the following structure:
+#    {"column_id": "column_value", "column_id": "column_value"}
+item = client.update_item(board_id, item_id, column_values)
 ```
 ### Webhooks
 #### - List webhooks
