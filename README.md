@@ -14,11 +14,11 @@ client = Client(api_token)
 ```
 Find your API token in your monday.com profile admin settings API section.
 
-### - Get current user
+#### - Get current user
 ```python
 user = client.get_current_user()
 ```
-#### - List Users
+#### - List users
 ```python
 users = client.list_users()
 ```
