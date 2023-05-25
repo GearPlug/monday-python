@@ -39,6 +39,10 @@ cols = client.list_columns(board_id)
 ```python
 items = client.list_items(board_id)
 ```
+#### - Get item
+```python
+item = client.get_item(item_id)
+```
 #### - Get items by column values
 ```python
 # The item's state: all, active, archived, or deleted. The default state is active.

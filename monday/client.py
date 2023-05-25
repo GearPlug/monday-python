@@ -40,6 +40,13 @@ class Client(object):
         }
         return self.post(json=body)
 
+    def get_item(self, item_id):
+        body = {
+            "query": f"query {{items (ids: {item_id}) {{ id name created_at column_values {{ title text }}  }}}}"
+        }
+        return self.post(json=body)
+
+
     def get_items_by_column_values(self, board_id, column_id, value, limit: int = 50, state: str = "active"):
         """
         Default limit is 50.
