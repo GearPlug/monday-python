@@ -41,8 +41,36 @@ class Client(object):
         return self.post(json=body)
 
     def get_item(self, item_id):
+        query: str = f"""
+            query {{
+                items (ids: {item_id}) {{ 
+                    id,
+                    name,
+                    created_at,
+                    group {{
+                        id
+                        title
+                    }}
+                    column_values {{
+                        id,
+                        text,
+                        value
+                        type
+                        ... on MirrorValue  {{
+                            display_value
+                        }}
+                        ... on BoardRelationValue  {{
+                            linked_items {{
+                                id,
+                                name
+                            }}
+                        }}
+                    }} 
+                }}
+            }}
+        """
         body = {
-            "query": f"query {{items (ids: {item_id}) {{ id name created_at column_values {{ title text }}  }}}}"
+            "query": query
         }
         return self.post(json=body)
 
