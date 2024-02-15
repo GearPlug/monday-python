@@ -2,7 +2,7 @@
 name = "monday-python"
 version = "0.1.0"
 description = "API wrapper for monday.com written in Python"
-authors = ["Juan Carlos Rios <juankrios15@gmail.com>"]
+authors = ["Gearplug Team <apps@gearplug.io>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "monday"}]
