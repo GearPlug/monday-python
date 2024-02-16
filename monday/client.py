@@ -114,7 +114,7 @@ class Client(object):
             {"column_id": "column_value", "column_id": "column_value"}
         """
         query = """
-            mutation ($boardId: Int!, $itemId: Int!, $columnVals: JSON!) {
+            mutation ($boardId: ID!, $itemId: ID!, $columnVals: JSON!) {
                 change_multiple_column_values (item_id: $itemId, board_id: $boardId, column_values: $columnVals) 
                     { id }
             }
