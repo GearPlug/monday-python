@@ -75,21 +75,35 @@ class Client(object):
         return self.post(json=body)
 
 
-    def get_items_by_column_values(self, board_id, column_id, value, limit: int = 50, state: str = "active"):
+    def get_items_by_column_values(self, board_id, column_id, value, limit: int = 500, state: str = "active"):
         """
-        Default limit is 50.
-        The item's state: all, active, archived, or deleted. The default state is active.
+            Default limit is 500.
+            State is deprecated.
         """
+
         query = f"""
             query {{
-                items_by_column_values (
-                    board_id: {board_id},
+              items_page_by_column_values (
+                limit: {limit},
+                board_id: {board_id},
+                columns: [
+                  {{
                     column_id: "{column_id}",
-                    column_value: "{value}",
-                    limit: {limit},
-                    state: {state}
-                ) {{ id name created_at column_values {{title text}} }}}}
-            """
+                    column_values: ["{value}"]
+                  }}
+                ]) {{
+                    items {{
+                      id
+                      name
+                      created_at
+                      column_values {{
+                        id
+                        text
+                      }}
+                    }}
+                }}
+            }} 
+        """
         body = {"query": query}
         return self.post(json=body)
 
