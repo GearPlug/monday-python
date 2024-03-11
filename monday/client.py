@@ -113,7 +113,7 @@ class Client(object):
         column_values is a dictionary with the following structure:
             {"column_id": "column_value", "column_id": "column_value"}
         """
-        query = "mutation ($boardId: Int!, $myItemName: String!, $columnVals: JSON!) { create_item (board_id: $boardId, item_name: $myItemName, column_values:$columnVals) { id } }"
+        query = "mutation ($boardId: ID!, $myItemName: String!, $columnVals: JSON!) { create_item (board_id: $boardId, item_name: $myItemName, column_values:$columnVals) { id } }"
         variables = {
             "boardId": int(board_id),
             "myItemName": item_name,
